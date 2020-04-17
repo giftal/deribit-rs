@@ -18,8 +18,8 @@ impl BuyRequest {
     pub fn market(instrument_name: &str, amount: f64) -> BuyRequest {
         BuyRequest(TradeRequest::market(instrument_name, amount))
     }
-    pub fn limit(instrument_name: &str, price: f64, amount: f64) -> BuyRequest {
-        BuyRequest(TradeRequest::limit(instrument_name, amount, price))
+    pub fn limit(instrument_name: &str, price: f64, amount: f64, t: TimeInForce) -> BuyRequest {
+        BuyRequest(TradeRequest::limit(instrument_name, amount, price, t))
     }
 }
 
@@ -40,8 +40,8 @@ impl SellRequest {
     pub fn market(instrument_name: &str, amount: f64) -> SellRequest {
         SellRequest(TradeRequest::market(instrument_name, amount))
     }
-    pub fn limit(instrument_name: &str, price: f64, amount: f64) -> SellRequest {
-        SellRequest(TradeRequest::limit(instrument_name, amount, price))
+    pub fn limit(instrument_name: &str, price: f64, amount: f64, t: TimeInForce) -> SellRequest {
+        SellRequest(TradeRequest::limit(instrument_name, amount, price, t))
     }
 }
 
@@ -125,14 +125,14 @@ impl TradeRequest {
         }
     }
 
-    pub fn limit(instrument_name: &str, amount: f64, price: f64) -> TradeRequest {
+    pub fn limit(instrument_name: &str, amount: f64, price: f64, t: TimeInForce) -> TradeRequest {
         TradeRequest {
             instrument_name: instrument_name.into(),
             amount: amount,
             r#type: OrderType::Limit,
             label: None,
             price: Some(price),
-            time_in_force: TimeInForce::GoodTilCancelled,
+            time_in_force: t,
             max_show: None,
             post_only: false,
             reduce_only: false,
